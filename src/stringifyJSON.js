@@ -12,6 +12,8 @@ var stringifyJSON = function(obj) {
   } else if (typeof obj === 'string') {
     // if a string already wrap in quotes
     return `"${obj}"`;
+  } else if (typeof obj === 'undefined' || typeof obj === 'function') {
+    return undefined;
   } else if (Array.isArray(obj)) {
   // check to see if obj is an array
     //if empty array
@@ -19,10 +21,26 @@ var stringifyJSON = function(obj) {
     // return stringifyed []
       return '[]';
     } else {
+      // call stringify on elements
     // if not empty, iterate through array
-      console.log(obj);
       return '[' + obj.map(stringifyJSON) + ']';
     }
+  } else {
+    if (Object.keys(obj).length === 0) {
+      return '{}';
+    } else {
+
+      var results = [];
+
+      for (var key in obj) {
+        if (typeof obj[key] === 'function' || typeof obj[key] === 'undefined') {
+          continue;
+        } else {
+          results.push(stringifyJSON(key) + ':' + stringifyJSON(obj[key]));        
+        }
+      }
+  
+      return '{' + results.join(',') + '}';
+    }
   }
-      // call stringify on elements
 };
