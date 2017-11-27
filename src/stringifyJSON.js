@@ -9,8 +9,20 @@ var stringifyJSON = function(obj) {
     //use regular type coercion to turn to string
   if (typeof obj === 'number' || typeof obj === 'boolean' || obj === null) {
     return '' + obj;
-  }  else if (typeof obj === 'string') {
+  } else if (typeof obj === 'string') {
     // if a string already wrap in quotes
     return `"${obj}"`;
+  } else if (Array.isArray(obj)) {
+  // check to see if obj is an array
+    //if empty array
+    if (obj.length === 0) {
+    // return stringifyed []
+      return '[]';
+    } else {
+    // if not empty, iterate through array
+      console.log(obj);
+      return '[' + obj.map(stringifyJSON) + ']';
+    }
   }
+      // call stringify on elements
 };
